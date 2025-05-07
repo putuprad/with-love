@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Pesan dan Kesan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body, html {
+    margin: 0; padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f9f2ff 0%, #d3c6f5 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  #container {
+    width: 90vw;
+    max-width: 600px;
+    max-height: 600px;
+    height: 90vh;
+    background: #fffefc;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    border-radius: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px 20px 40px 20px;
+  }
+
+  #pesanButton {
+    background: #8e44ad;
+    color: white;
+    font-size: 2.2rem;
+    font-weight: 600;
+    padding: 30px 70px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(142, 68, 173, 0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+  #pesanButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(142, 68, 173, 0.7);
+  }
+
+  #letterAndFlowers {
+    display: none;
+    width: 100%;
+    height: 100%;
+    gap: 20px;
+    flex-wrap: nowrap;
+  }
+
+  #letter {
+    background: #fff5e6;
+    flex: 1 1 60%;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 30px 30px 30px 40px;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #5a3e36;
+    line-height: 1.5;
+    position: relative;
+    overflow-y: auto;
+  }
+
+  #letter::before {
+    content: "";
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e9c397;
+    box-shadow:
+      10px 10px 0 #e6ae57,
+      20px 20px 0 #f3d1a5;
+    z-index: -1;
+  }
+
+  #flowers {
+    flex: 1 1 40%;
+    position: relative;
+    overflow: visible;
+  }
+
+  /* Flower styles using CSS shapes */
+  .flower {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.1));
+    user-select: none;
+  }
+
+  .flower-circle {
+    width: 20px;
+    height: 20px;
+    background: var(--petal-color);
+    border-radius: 50%;
+    position: absolute;
+  }
+
+  /* Petal position around center */
+  .petal-1 {
+    top: 0; left: 20px;
+  }
+  .petal-2 {
+    top: 20px; left: 40px;
+  }
+  .petal-3 {
+    top: 40px; left: 20px;
+  }
+  .petal-4 {
+    top: 20px; left: 0;
+  }
+
+  .flower-center {
+    position: absolute;
+    top: 20px; left: 20px;
+    width: 20px; height: 20px;
+    background: var(--center-color);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--center-color);
+  }
+
+  /* Floating animation for flowers */
+  @keyframes floatUpAndDown {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-12px) rotate(5deg); }
+    100% { transform: translateY(0); }
+  }
+
+  .flower {
+    animation: floatUpAndDown ease-in-out infinite;
+  }
+
+  /* Slight delay between flowers */
+  .flower:nth-child(1) { top: 20px; left: 30px; animation-delay: 0s; --petal-color:#ff6978; --center-color:#ff3b3f;}
+  .flower:nth-child(2) { top: 110px; left: 80px; animation-delay: 1s; --petal-color:#fee440; --center-color:#f9d71c;}
+  .flower:nth-child(3) { top: 220px; left: 10px; animation-delay: 1.8s; --petal-color:#6bf178; --center-color:#30cb16;}
+  .flower:nth-child(4) { top: 300px; left: 90px; animation-delay: 2.4s; --petal-color:#66b3ff; --center-color:#006ecc;}
+  .flower:nth-child(5) { top: 400px; left: 40px; animation-delay: 3s; --petal-color:#ff79d1; --center-color:#e3007a;}
+  .flower:nth-child(6) { top: 500px; left: 80px; animation-delay: 3.6s; --petal-color:#f8c291; --center-color:#f39c12;}
+
+  /* Scrollbar for letter on small heights */
+  #letter::-webkit-scrollbar {
+    width: 8px;
+  }
+  #letter::-webkit-scrollbar-thumb {
+    background: #d9b382;
+    border-radius: 4px;
+  }
+  #letter::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Appear animation */
+  @keyframes fadeInSlide {
+    from {opacity: 0; transform: translateX(50px);}
+    to {opacity: 1; transform: translateX(0);}
+  }
+
+  #letterAndFlowers.show {
+    display: flex;
+    animation: fadeInSlide 0.8s ease forwards;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 500px) {
+    #container {
+      flex-direction: column;
+      max-height: 600px;
+      height: 95vh;
+      padding: 15px 15px 30px 15px;
+    }
+    #letterAndFlowers.show {
+      flex-direction: column;
+      gap: 25px;
+    }
+    #letter {
+      flex: none;
+      height: 280px;
+      overflow-y: scroll;
+      padding: 20px;
+      font-size: 1rem;
+    }
+    #flowers {
+      height: 200px;
+      flex: none;
+      position: relative;
+    }
+    .flower {
+      width: 40px;
+      height: 40px;
+    }
+    .flower-circle {
+      width: 12px;
+      height: 12px;
+    }
+    .flower-center {
+      width: 12px;
+      height: 12px;
+      top: 14px;
+      left: 14px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div id="container">
+    <div id="pesanButton" tabindex="0" role="button" aria-pressed="false" aria-label="Buka pesan dan kesan">
+      Pesan
+    </div>
+
+    <div id="letterAndFlowers" role="region" aria-live="polite" aria-label="Isi pesan dan bunga hiasan">
+      <div id="letter" tabindex="0">
+        Haii, makasii banyak buat 3 tahunnyaa yaa. Seneng banget bisa ketemu kamuu di sekolah ini. Aku ngga pernah tau waktu akan bawa kita kemana, tapi terimakasih karena kamu udah ngga ngelawan waktu buat ketemu akuu yang zuper menyusahkan ini haha. Semoga kita bisa ketemu di pertemuan waktu lainnya. God Bless Youu, jangan lupa apapun yang bakal kamu lakuin sekarang, besok, ataupun yang akan datang. Selalu sisakan ruang untuk ikhlas. Karena aku percaya di dunia ini hidup akan lebih tenang jika kita bisa ikhlas. Lov yuuuuu🤍🤍
+      </div>
+      <div id="flowers" aria-hidden="true">
+        <div class="flower" style="--petal-color:#ff6f91; --center-color:#d81e5b;">
+          <div class="flower-circle petal-1"></div>
+          <div class="flower-circle petal-2"></div>
+          <div class="flower-circle petal-3"></div>
+          <div class="flower-circle petal-4"></div>
+          <div class="flower-center"></div>
+        </div>
+        <div class="flower" style="--petal-color:#ffcb77; --center-color:#d9a42d;">
+          <div class="flower-circle petal-1"></div>
+          <div class="flower-circle petal-2"></div>
+          <div class="flower-circle petal-3"></div>
+          <div class="flower-circle petal-4"></div>
+          <div class="flower-center"></div>
+        </div>
+        <div class="flower" style="--petal-color:#8bd3c7; --center-color:#3b7d7d;">
+          <div class="flower-circle petal-1"></div>
+          <div class="flower-circle petal-2"></div>
+          <div class="flower-circle petal-3"></div>
+          <div class="flower-circle petal-4"></div>
+          <div class="flower-center"></div>
+        </div>
+        <div class="flower" style="--petal-color:#ffa07a; --center-color:#d9673f;">
+          <div class="flower-circle petal-1"></div>
+          <div class="flower-circle petal-2"></div>
+          <div class="flower-circle petal-3"></div>
+          <div class="flower-circle petal-4"></div>
+          <div class="flower-center"></div>
+        </div>
+        <div class="flower" style="--petal-color:#dab6fc; --center-color:#6a3ab9;">
+          <div class="flower-circle petal-1"></div>
+          <div class="flower-circle petal-2"></div>
+          <div class="flower-circle petal-3"></div>
+          <div class="flower-circle petal-4"></div>
+          <div class="flower-center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const pesanButton = document.getElementById('pesanButton');
+  const letterAndFlowers = document.getElementById('letterAndFlowers');
+
+  pesanButton.addEventListener('click', () => {
+    pesanButton.style.display = 'none';
+    letterAndFlowers.classList.add('show');
+  });
+
+  // Allow keyboard accessibility for the button
+  pesanButton.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      pesanButton.click();
+    }
+  });
+</script>
+</body>
+</html>
+</content>
+</create_file>
